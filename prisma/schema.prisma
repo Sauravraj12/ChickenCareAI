@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMINISTRATOR
+  CAREGIVER
+  FAMILY
+}
+
+enum BookingStatus {
+  BOOKED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id            String            @id @default(cuid())
+  email         String            @unique
+  name          String
+  role          UserRole          @default(FAMILY)
+  createdAt     DateTime          @default(now())
+  profile       UserProfile?
+  assessments   WellnessAssessment[]
+  moods         MoodRecord[]
+  chickens      Chicken[]
+  bookings      ActivityBooking[]
+  caregiver     Caregiver?
+  careNotes     CareNote[]        @relation("AuthoredNotes")
+  notifications Notification[]
+  conversations AIConversation[]
+}
+
+model UserProfile {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  preferredLanguage  String   @default("English")
+  timezone           String   @default("UTC")
+  emergencyContact   String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model WellnessAssessment {
+  id                String   @id @default(cuid())
+  userId            String
+  mood              String
+  sleepHours        Float
+  activityMinutes   Int
+  stressLevel       Int
+  socialEngagement  Int
+  interactionCount  Int      @default(0)
+  note              String?
+  createdAt         DateTime @default(now())
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model MoodRecord {
+  id        String   @id @default(cuid())
+  userId    String
+  mood      String
+  note      String?
+  recordedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, recordedAt])
+}
+
+model Chicken {
+  id          String                @id @default(cuid())
+  ownerId     String
+  name        String
+  breed       String?
+  adoptedAt   DateTime?
+  createdAt   DateTime              @default(now())
+  owner       User                  @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  welfareRecords ChickenWelfareRecord[]
+
+  @@index([ownerId])
+}
+
+model ChickenWelfareRecord {
+  id              String   @id @default(cuid())
+  chickenId       String
+  feedingComplete Boolean  @default(false)
+  waterAvailable  Boolean  @default(false)
+  cleanArea       Boolean  @default(false)
+  behavior        String?
+  featherNotes    String?
+  skinNotes       String?
+  postureNotes    String?
+  veterinaryVisit Boolean  @default(false)
+  veterinaryNotes String?
+  createdAt       DateTime @default(now())
+  chicken         Chicken  @relation(fields: [chickenId], references: [id], onDelete: Cascade)
+
+  @@index([chickenId, createdAt])
+}
+
+model Activity {
+  id           String            @id @default(cuid())
+  title        String
+  description  String
+  durationMins Int
+  difficulty   String
+  safety       String
+  equipment    String
+  participants String
+  benefit      String
+  bookings     ActivityBooking[]
+  createdAt    DateTime          @default(now())
+}
+
+model ActivityBooking {
+  id         String        @id @default(cuid())
+  userId     String
+  activityId String
+  scheduledAt DateTime
+  status     BookingStatus @default(BOOKED)
+  completedAt DateTime?
+  createdAt  DateTime      @default(now())
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity   Activity      @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@index([userId, scheduledAt])
+}
+
+model Caregiver {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  phone     String?
+  notes     String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model CareNote {
+  id        String   @id @default(cuid())
+  authorId  String
+  text      String
+  createdAt DateTime @default(now())
+  author    User     @relation("AuthoredNotes", fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([authorId, createdAt])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  body      String
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model AIConversation {
+  id        String      @id @default(cuid())
+  userId    String
+  title     String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  AIMessage[]
+
+  @@index([userId, updatedAt])
+}
+
+model AIMessage {
+  id             String         @id @default(cuid())
+  conversationId String
+  role           String
+  content        String
+  simulated      Boolean        @default(true)
+  createdAt      DateTime       @default(now())
+  conversation   AIConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId, createdAt])
+}
