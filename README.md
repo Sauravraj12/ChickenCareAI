@@ -1,46 +1,209 @@
 # ChickenCare AI
 
-**Happy Chickens, Healthier Lives.** A responsive MVP exploring chicken-assisted activities, human wellbeing reflection, animal welfare, and responsible AI support. Built for Team 1 — Theme A / SDG 3, Taiwan Social Enterprise Startup Proposal Competition.
+**Happy Chickens, Healthier Lives.**
 
-> **Safety and demo notice:** The assistant and chicken-image screening are simulated. Uploaded image pixels are not sent to or interpreted by a model. Wellbeing entries are self-reported, not clinically validated scores. This application does not diagnose, treat, or replace a health professional or veterinarian.
+ChickenCare AI is a responsive MVP exploring how chicken-assisted activities, human wellbeing reflection, animal welfare, and AI-powered support can work together. It was created for **Team 1 — Theme A** and **SDG 3: Good Health and Well-being** at the Taiwan Social Enterprise Startup Proposal Competition.
 
-## What works in the MVP
+> **Safety and demo notice:** This project is a competition prototype, not a medical or veterinary service. The assistant and chicken-image screening are simulated; no real language or computer-vision model is called. Uploaded image pixels are previewed in the browser and are not submitted to the screening API. Wellness information is self-reported, not a clinically validated score. The application cannot diagnose, treat, or replace a qualified professional.
 
-- Public product homepage and one-click demo sign-in (`demo@chickencare.ai` / `chickencare-demo`; any non-empty valid credentials open the local demo).
-- Dashboard with sample metrics, mood and activity charts, care overview, and week/month filter.
-- AI assistant chat simulation with English, Hindi, and Traditional Chinese responses, local conversation history, and a safety escalation message for crisis language.
-- Chicken Vision workflow with image preview, JPEG/PNG/WebP and 8 MB validation, observation fields, progress state, and an explicitly simulated report. The API does not receive image bytes.
-- Human wellness check-ins, browser persistence, rule-based suggestions, and self-reported trend charts.
-- Chicken welfare checklists, behavior/appearance notes, and care history.
+## Contents
+
+- [Features](#features)
+- [Technology](#technology)
+- [Requirements](#requirements)
+- [Quick start on Windows](#quick-start-on-windows)
+- [Quick start on macOS and Linux](#quick-start-on-macos-and-linux)
+- [Demo account](#demo-account)
+- [How to use the application](#how-to-use-the-application)
+- [Demo data and privacy](#demo-data-and-privacy)
+- [API routes](#api-routes)
+- [Optional PostgreSQL and Prisma setup](#optional-postgresql-and-prisma-setup)
+- [Optional FastAPI service](#optional-fastapi-service)
+- [Environment variables](#environment-variables)
+- [Checks and production build](#checks-and-production-build)
+- [Troubleshooting](#troubleshooting)
+- [Production readiness](#production-readiness)
+
+## Features
+
+- Public landing page and demo sign-in.
+- Dashboard with sample metrics, wellbeing and activity charts, care overview, and weekly/monthly filters.
+- AI Health Assistant with simulated English, Hindi, and Traditional Chinese responses, browser-local conversation history, and a safety escalation message for crisis language.
+- Chicken Vision workflow with photo preview, JPEG/PNG/WebP validation, a size and image-dimension check, observation form, progress state, and explicitly simulated report. The API does not receive image bytes.
+- Human wellness check-ins with rule-based suggestions, mood trends, and browser-local progress history.
+- Chicken welfare checklists, behavior and appearance notes, and care history.
 - Activity search, date-based booking, and completion tracking.
-- Family/caregiver demo profiles, role selector, and persistent care notes.
-- Analytics with charts, CSV export, and print-to-PDF.
-- Dark mode, responsive navigation, settings, empty/error/loading states, and local demo reset.
-- Next.js route handlers for demo assistant, vision observation, and wellness recommendation workflows.
-- PostgreSQL Prisma schema and repeatable seed script for the production integration path.
-- Optional FastAPI service boundary for future AI model integrations.
+- Family and caregiver demo profiles, illustrative role selector, and shared care notes.
+- Analytics charts, CSV export, and print-to-PDF via the browser’s print dialog.
+- Responsive navigation, dark mode, loading and empty states, and a demo-data reset.
+- Next.js API routes, PostgreSQL Prisma schema and seed script, and an optional FastAPI integration boundary.
+
+## Technology
+
+- Next.js 15 App Router, React 19, and TypeScript
+- Tailwind CSS, Lucide React, Recharts, and Framer Motion
+- Next.js route handlers for demo assistant, vision observation, and wellness suggestions
+- Prisma schema for PostgreSQL
+- Optional Python FastAPI service boundary
 
 ## Requirements
 
-- Node.js 20.9 or newer (tested target: Node 22)
-- npm
-- Python 3.10+ only if running the optional FastAPI service
-- PostgreSQL only if using Prisma/database setup; the UI demo works without it
+For the browser demo:
 
-## Run the web demo
+- Node.js **20.9 or newer** (Node 22 is recommended)
+- npm
+- Git is optional, only needed to clone the repository
+
+For the optional integrations:
+
+- PostgreSQL for Prisma schema setup and seed data
+- Python 3.10+ and pip for FastAPI
+
+Check your installed tools:
+
+```powershell
+node --version
+npm --version
+```
 
 ```bash
+node --version
+npm --version
+```
+
+## Quick start on Windows
+
+Open PowerShell in the project folder. If you cloned the repository using Git:
+
+```powershell
+git clone https://github.com/Sauravraj12/ChickenCareAI.git
+cd ChickenCareAI
+```
+
+If you already have the project locally, change to its folder instead:
+
+```powershell
+cd "C:\Users\admin\Desktop\Chicken Assisted happy life"
+```
+
+Install dependencies and run the development server:
+
+```powershell
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Choose **Explore the demo**, or sign in with the demo credentials above. Demo entries persist in the current browser using local storage; use **Settings → Restore sample data** to reset them.
+Open [http://localhost:3000](http://localhost:3000) in your browser. Keep the terminal open while using the development server; press **Ctrl+C** in that terminal to stop it.
 
-## Production database setup
+### Run a production build on Windows
 
-1. Create a PostgreSQL database and copy `.env.example` to `.env`.
-2. Set `DATABASE_URL` to your PostgreSQL connection string.
-3. Generate the Prisma client and apply the schema:
+```powershell
+npm run lint
+npm run build
+npm start
+```
+
+Then open [http://localhost:3000](http://localhost:3000). `npm start` serves the production build and requires `npm run build` to have completed first.
+
+## Quick start on macOS and Linux
+
+```bash
+git clone https://github.com/Sauravraj12/ChickenCareAI.git
+cd ChickenCareAI
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). To run a production build:
+
+```bash
+npm run lint
+npm run build
+npm start
+```
+
+## Demo account
+
+Use the sign-in link on the homepage:
+
+- **Email:** `demo@chickencare.ai`
+- **Password:** `chickencare-demo`
+
+This is a convenience-only demo login. The current MVP does not verify passwords or authenticate against a database; any valid email and non-empty password can enter the demo workspace. Do not use this login pattern in a deployed application.
+
+The homepage’s **Explore demo** button opens the dashboard directly.
+
+## How to use the application
+
+The workspace navigation remains available on desktop. On mobile, use the menu button in the header to open the navigation drawer.
+
+1. **Dashboard** — review sample community counts, saved check-ins and observations, chart filters, welfare overview, reminders, activities, and care notes.
+2. **AI Health Assistant** — ask a general wellbeing question, choose English/Hindi/Traditional Chinese, and send it to the simulated rule-based assistant. Replies are not clinical advice and are not generated by a paid LLM.
+3. **Chicken Vision AI** — choose or drop a JPEG, PNG, or WebP image (up to 8 MB and at least 160 × 160 pixels), inspect its browser preview, fill in observations, and run the demo screening. The generated report is based on your form values; it does not analyze the photo.
+4. **Human Wellness** — select a mood, enter sleep, activity, stress and social-connection values, then save the check-in to see general rule-based suggestions. Entries and mood trends are self-reported and not validated health scores.
+5. **Chicken Welfare** — choose a chicken, complete the feeding, water, and cleanliness checklist, note behavior or appearance, then save the observation.
+6. **Activity Planner** — search and review activities, including duration, difficulty, safety, equipment, participants, and expected benefits. Select **Plan this activity**, choose a date, and confirm the booking. Mark a booked activity as complete when finished.
+7. **Family & Caregiver** — inspect illustrative demo members and roles, add a care note, and view the shared note history. The profiles are examples, not real accounts.
+8. **Analytics & Reports** — compare check-in and care trends, export wellbeing entries as CSV, or choose **Save as PDF** to open the browser print dialog. From there, select a PDF destination if available.
+9. **Settings** — review demo preferences and safety information or restore the original sample data. Use the moon/sun button in the header to switch the theme.
+
+## Demo data and privacy
+
+The current UI saves assessments, activity bookings, welfare entries, assistant messages, care notes, and the theme choice in the **current browser’s local storage**. This demo persistence is local to that browser profile; it does not sync across devices and does not currently use PostgreSQL.
+
+The image preview uses a temporary browser object URL. Image bytes are not sent to the vision API or an external model. The AI API routes return explicitly marked simulated/rule-based outputs and do not call paid services. Avoid entering sensitive or personally identifying information.
+
+To clear saved workspace data, open **Settings → Restore sample data** and confirm. This restores the app’s demo data. To clear the local demo sign-in, use the profile control at the bottom of the sidebar to sign out.
+
+## API routes
+
+The Next.js app provides these same-origin route handlers:
+
+| Method | Route | Purpose |
+|---|---|---|
+| `POST` | `/api/assistant` | Validates a text question and returns a rule-based simulated response. Accepts `message` and optional `language` (`English`, `Hindi`, or `Traditional Chinese`). |
+| `POST` | `/api/wellness` | Validates a self-reported check-in and returns general rule-based suggestions. It does not calculate a clinical score. |
+| `POST` | `/api/vision` | Creates a simulated report from user-entered observation fields. It does not accept or analyze the uploaded image. |
+
+Example assistant request:
+
+```powershell
+Invoke-RestMethod `
+  -Uri "http://localhost:3000/api/assistant" `
+  -Method Post `
+  -ContentType "application/json" `
+  -Body '{"message":"I feel stressed today","language":"English"}'
+```
+
+The route handlers validate malformed JSON, missing fields, message length, allowed values, and numeric ranges. Demo APIs are not authenticated; add authentication, authorization, rate limiting, and privacy protections before exposing them to real users.
+
+## Optional PostgreSQL and Prisma setup
+
+The web demo runs without PostgreSQL. The Prisma schema and seed script are an integration path and are not yet wired to the browser UI.
+
+1. Install and start PostgreSQL, then create an empty database named `chickencare` (or choose another name).
+2. Copy the example environment file:
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+   On macOS/Linux:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Edit `.env` and set `DATABASE_URL` to your own PostgreSQL user, password, host, port, and database. For example:
+
+   ```dotenv
+   DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@localhost:5432/chickencare?schema=public"
+   DEMO_MODE="true"
+   LLM_API_KEY=""
+   ```
+
+   Replace the placeholder password; do not commit `.env` or real credentials.
+4. From the project folder, generate Prisma Client, create/update database tables, and seed sample records:
 
    ```bash
    npm run db:generate
@@ -48,32 +211,124 @@ Open [http://localhost:3000](http://localhost:3000). Choose **Explore the demo**
    npm run db:seed
    ```
 
-The Prisma schema is an integration-ready data model. The current UI intentionally uses browser-local demo persistence and does **not** yet authenticate users against the database. Do not deploy the demo login as production authentication.
+`db:push` synchronizes the Prisma schema to the configured database. The seed script creates the demo user, chickens, and sample activities. It does not connect UI login or browser-local records to the database.
 
-## Optional FastAPI integration boundary
+## Optional FastAPI service
 
-```bash
-python -m venv .venv
-# Windows PowerShell:
-.venv\Scripts\Activate.ps1
-pip install -r ai-service/requirements.txt
-uvicorn main:app --app-dir ai-service --reload --port 8000
+The optional service is a separate integration boundary. Its endpoints return placeholders and rule-based suggestions; it does not load AI or vision models.
+
+### Windows PowerShell
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r ai-service\requirements.txt
+python -m uvicorn main:app --app-dir ai-service --reload --port 8000
 ```
 
-Check `http://localhost:8000/docs`. Endpoints return explicit demo placeholders and do not load or call AI/vision models. To connect a real model, implement an authenticated provider adapter, privacy/consent controls, output validation, clinical and veterinary review, and monitoring before enabling it. Never present model output as a diagnosis.
+If PowerShell blocks activation, allow it only for the current terminal process and activate again:
 
-## AI/provider architecture
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\Activate.ps1
+```
 
-- `lib/ai-adapter.ts` isolates rule-based assistant and wellness responses.
-- `app/api/assistant` and `app/api/wellness` validate input and return clearly labeled demo outputs.
-- `app/api/vision` reports only user-entered observations; it does not accept or analyze image bytes.
-- `ai-service/main.py` provides a separate future FastAPI boundary.
-- `LLM_API_KEY` is intentionally unused in demo mode. No paid key is required.
+### macOS and Linux
 
-## Build and validation
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r ai-service/requirements.txt
+python -m uvicorn main:app --app-dir ai-service --reload --port 8000
+```
+
+When the server is running:
+
+- Health check: [http://localhost:8000/health](http://localhost:8000/health)
+- Interactive API docs: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+Stop the service with **Ctrl+C**. The FastAPI service runs independently from Next.js; the current UI API handlers do not proxy requests to it.
+
+## Environment variables
+
+| Variable | Required? | Description |
+|---|---|---|
+| `DATABASE_URL` | Only for Prisma | PostgreSQL connection string used by Prisma CLI and seed/setup commands. |
+| `DEMO_MODE` | No | Example flag set to `true`; simulation is the current default. |
+| `LLM_API_KEY` | No | Reserved for future provider integration. It is intentionally unused by the demo and should remain empty for local demo use. |
+
+Copy `.env.example` to `.env` only when configuring the optional database. Never commit secrets, API keys, or the real `.env` file.
+
+## Checks and production build
+
+Run TypeScript validation:
+
+```bash
+npm run lint
+```
+
+Create an optimized Next.js production build:
 
 ```bash
 npm run build
 ```
 
-For a deploy, provide the database connection, generate Prisma, and build the Next.js application. Configure authentication, access control, consent, data-retention policy, secure image handling, and professional review before processing real users’ health or animal-care information.
+Serve the production build locally:
+
+```bash
+npm start
+```
+
+Validate the Prisma schema (the placeholder URL is sufficient for schema validation; a database connection is not required):
+
+```powershell
+$env:DATABASE_URL = "postgresql://demo:demo@localhost:5432/chickencare"
+npx prisma validate
+```
+
+No automated browser-test suite is currently configured. Manually verify the main journeys after changes: sign in, save a wellness check-in, chat with the assistant, upload and screen a supported image, save a welfare observation, book and complete an activity, add a care note, and export analytics.
+
+## Troubleshooting
+
+### `npm` or `node` is not recognized
+
+Install Node.js 20.9 or newer, close and reopen the terminal, then verify `node --version` and `npm --version`.
+
+### Port 3000 is already in use
+
+Stop the other development server, or choose another port:
+
+```powershell
+npm run dev -- --port 3001
+```
+
+Then open [http://localhost:3001](http://localhost:3001).
+
+### A change does not appear in the browser
+
+Check the terminal for compile errors and wait for Next.js to finish rebuilding. Refresh the browser. If a browser contains stale demo data, use **Settings → Restore sample data**.
+
+### Prisma cannot connect to PostgreSQL
+
+Confirm PostgreSQL is running, the database exists, and `DATABASE_URL` has the correct username, password, port, and database name. `npm run dev` does not require the database.
+
+### Python virtual-environment activation is blocked
+
+Use the process-scoped PowerShell execution-policy command in [Optional FastAPI service](#optional-fastapi-service), or run the environment's Python executable directly without activation.
+
+### Upload is rejected
+
+Use a valid JPEG, PNG, or WebP file that is no larger than 8 MB and has dimensions of at least 160 × 160 pixels. The image is for preview only; the demo does not perform visual analysis.
+
+## Production readiness
+
+This repository is an MVP and should not be deployed as a real health or animal-care service without further work. Before using real accounts or sensitive data, implement and review:
+
+- Real authentication, secure sessions, role-based authorization, and account recovery.
+- Database-backed persistence, access controls, retention and deletion policies, backups, and migrations.
+- Consent, privacy notices, data minimization, transport/storage security, and applicable regulatory review.
+- Secure upload storage, content validation, malware controls, and a vetted computer-vision provider if image analysis is ever added.
+- A replaceable, authenticated LLM/provider adapter with output validation, safety review, monitoring, rate limits, and cost controls.
+- Qualified medical and veterinary review of any health-related content and clear escalation pathways.
+
+Never present generated or simulated output as a medical diagnosis, veterinary finding, or clinically validated prediction.
