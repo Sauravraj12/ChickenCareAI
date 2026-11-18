@@ -23,5 +23,9 @@ export async function POST(request: Request) {
   if (sleep < 0 || sleep > 24 || activity < 0 || activity > 1440 || stress < 1 || stress > 5 || social < 1 || social > 5) {
     return NextResponse.json({ error: "One or more assessment values are outside the allowed range." }, { status: 400 });
   }
-  return NextResponse.json({ suggestions: wellnessSuggestions({ mood: input.mood, sleep, activity, stress, social }), mode: "rule-based demo; not a clinical assessment" });
+  const language = input.language === "zh-TW" ? "zh-TW" : "en";
+  return NextResponse.json({
+    suggestions: wellnessSuggestions({ mood: input.mood, sleep, activity, stress, social }, language),
+    mode: language === "zh-TW" ? "繁體中文規則式示範；非臨床評估" : "rule-based demo; not a clinical assessment"
+  });
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Activity, Bell, CalendarDays, Camera, ChartNoAxesCombined, ChevronRight, ClipboardCheck, Heart, HeartHandshake, Home, Menu, MessageCircle, Moon, Settings, ShieldCheck, Sun, Users, X } from "lucide-react";
+import { LanguageSwitch, Localized } from "@/lib/i18n";
 
 const navigation = [
   { title: "Dashboard", href: "/dashboard", icon: Home, group: "OVERVIEW" },
@@ -43,7 +44,7 @@ export default function WorkspaceShell({ children }: Readonly<{ children: React.
     router.push("/");
   }
 
-  return <div className="app-shell">
+  return <Localized><div className="app-shell">
     {mobileOpen && <button aria-label="Close navigation" onClick={() => setMobileOpen(false)} style={{ position: "fixed", inset: 0, background: "#14201855", border: 0, zIndex: 19 }} />}
     <aside className={`sidebar ${mobileOpen ? "open" : ""}`}>
       <Link href="/dashboard" className="brand" onClick={() => setMobileOpen(false)}>
@@ -69,6 +70,7 @@ export default function WorkspaceShell({ children }: Readonly<{ children: React.
       <header className="topbar">
         <div className="topbar-left"><button className="icon-button mobile-toggle" aria-label="Open menu" onClick={() => setMobileOpen(true)}><Menu size={17} /></button><div className="breadcrumb"><span>Workspace</span><ChevronRight size={12} style={{ margin: "0 5px", verticalAlign: "middle" }} /><b>{active?.title ?? "Dashboard"}</b></div></div>
         <div className="top-actions">
+          <LanguageSwitch compact />
           <button className="icon-button" aria-label={dark ? "Switch to light mode" : "Switch to dark mode"} onClick={toggleTheme}>{dark ? <Sun size={16} /> : <Moon size={16} />}</button>
           <div style={{ position: "relative" }}>
             <button className="icon-button" aria-label="Notifications" onClick={() => setNotifications(value => !value)}><Bell size={16} /><span className="notification-dot" /></button>
@@ -83,5 +85,5 @@ export default function WorkspaceShell({ children }: Readonly<{ children: React.
       </header>
       {children}
     </main>
-  </div>;
+  </div></Localized>;
 }

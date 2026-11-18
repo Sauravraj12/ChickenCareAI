@@ -1,13 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import { Activity, ArrowRight, HeartHandshake, ShieldCheck, Sparkles } from "lucide-react";
+import { LanguageSwitch, Localized } from "@/lib/i18n";
 
 export default function HomePage() {
-  return <main className="landing">
+  return <Localized><main className="landing">
     <nav className="landing-nav">
       <Link href="/" className="brand" style={{ padding: 0, margin: 0 }}>
         <span className="brand-mark"><span>🐔</span></span><span><span className="brand-name">ChickenCare AI</span><span className="brand-tag" style={{ display: "block" }}>Happy Chickens, Healthier Lives.</span></span>
       </Link>
-      <div className="landing-links"><a href="#how">How it works</a><a href="#impact">Our impact</a><a href="#features">Features</a><Link href="/login">Sign in</Link><Link href="/dashboard" className="button button-primary button-small">Explore demo <ArrowRight size={14} /></Link></div>
+      <div className="landing-links"><a href="#how">How it works</a><a href="#impact">Our impact</a><a href="#features">Features</a><Link href="/login">Sign in</Link><LanguageSwitch /><Link href="/dashboard" className="button button-primary button-small">Explore demo <ArrowRight size={14} /></Link></div>
       <Link href="/login" className="button button-primary button-small" style={{ display: "none" }}>Get started</Link>
     </nav>
     <section className="hero">
@@ -40,5 +43,5 @@ export default function HomePage() {
       <div className="eyebrow">Try the interactive prototype</div><h2>See what a little care can grow into.</h2><p style={{ margin: "0 auto" }}>Explore the dashboard, complete a check-in, and try the clearly labeled AI demo flows.</p><div style={{ marginTop: 20 }}><Link href="/dashboard" className="button button-primary">Explore ChickenCare AI <ArrowRight size={15} /></Link></div>
     </section>
     <footer className="landing-footer"><div style={{ maxWidth: 1160, margin: "auto", display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}><span>© 2026 ChickenCare AI · Team 1 — Competition demo</span><span>Happy Chickens, Healthier Lives.</span></div></footer>
-  </main>;
+  </main></Localized>;
 }

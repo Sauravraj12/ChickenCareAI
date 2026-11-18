@@ -38,8 +38,17 @@ export function simulateAssistantReply(message: string, language: AssistantLangu
   return copy.default;
 }
 
-export function wellnessSuggestions(input: { mood: string; sleep: number; activity: number; stress: number; social: number }): string[] {
+export function wellnessSuggestions(input: { mood: string; sleep: number; activity: number; stress: number; social: number }, language: "en" | "zh-TW" = "en"): string[] {
   const suggestions: string[] = [];
+  if (language === "zh-TW") {
+    if (input.sleep < 7) suggestions.push("如果情況允許，可以嘗試平靜的睡前儀式與固定就寢時間。每個人的睡眠需求都不同。");
+    if (input.activity < 30) suggestions.push("舒適地伸展一下或輕鬆散步，是增加一點活動量的簡單方式。");
+    if (input.stress >= 4) suggestions.push("試著短暫休息，或向信任的人分享感受。請選擇適合自己的方式。");
+    if (input.social <= 2) suggestions.push("今天傳訊息或打電話給信任的人，是否能帶給您一些支持？");
+    if (input.mood === "Low" || input.mood === "Anxious") suggestions.push("請溫柔地對待自己。如果困難的感受持續或令您擔憂，請考慮諮詢合格的健康專業人員。");
+    if (!suggestions.length) suggestions.push("您正為覺察自己的感受留出空間。可以維持溫和的日常，並選擇一項喜歡的活動。");
+    return suggestions;
+  }
   if (input.sleep < 7) suggestions.push("If possible, consider a calm wind-down routine and a consistent bedtime. Sleep needs vary from person to person.");
   if (input.activity < 30) suggestions.push("A short, comfortable stretch or gentle walk can be a manageable way to add a little movement.");
   if (input.stress >= 4) suggestions.push("Try taking a brief pause or sharing how you feel with someone you trust. Choose what feels right for you.");
